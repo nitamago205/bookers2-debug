@@ -1,9 +1,9 @@
 class BooksController < ApplicationController
 
   def show
-    @books = Book.find(params[:id])
+    @book_f = Book.find(params[:id])
     @book = Book.new
-    @user = @books.user
+    @user = @book_f.user
     @book_comment = BookComment.new
   end
 
@@ -43,7 +43,7 @@ class BooksController < ApplicationController
   end
 
   def destroy
-    @book = Book.find(params[:id])
+    @book_f = Book.find(params[:id])
     @book.destroy
     redirect_to books_path
   end
