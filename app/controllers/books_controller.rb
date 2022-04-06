@@ -8,7 +8,12 @@ class BooksController < ApplicationController
   end
 
   def index
-    pp @books = Book.all
+    to  = Time.current.at_beginning_of_day
+    from  = (to - 6.day).at_end_of_day
+    @books = Book.all.sort {|a,b| 
+      b.favorites.where(created_at: from...to).size <=> 
+      a.favorites.where(created_at: from...to).size
+    }
     @book = Book.new
   end
 
@@ -34,7 +39,6 @@ class BooksController < ApplicationController
 
   def update
     @book = Book.find(params[:id])
-    # @book = Book.new
     if @book.update(book_params)
       redirect_to book_path(@book), notice: "You have updated book successfully."
     else
